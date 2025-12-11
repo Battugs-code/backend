@@ -1,6 +1,8 @@
 import {
   createAccountService,
   updateAccountServive,
+  deleteAccountService,
+  createTransactionService,
 } from "../services/bank.js";
 
 export const createAccount = async (req, res) => {
@@ -11,15 +13,17 @@ export const createAccount = async (req, res) => {
 
 // Дансны мэдээллийг шинэчлэх
 export const updateAccount = async (req, res) => {
-  const { id, user_id, account_number, balance } = req.body;
-  const user = await updateAccountServive(id, user_id, account_number, balance);
-  res.json({});
+  const { userid, number, balance } = req.body;
+  const user = await updateAccountServive(userid, number, balance);
+  res.json({ user });
 };
 
 // Данс устгах
 export const deleteAccount = async (req, res) => {
-  const { id } = req.body;
-  res.json({});
+  const { userid } = req.body;
+  const user = await deleteAccountService(userid);
+
+  res.json({ user });
 };
 
 // Бүх дансыг авах
@@ -38,11 +42,12 @@ export const getAccountByNumber = async (req, res) => {
 // Шинэ гүйлгээ үүсгэх
 
 export const createTransaction = async (req, res) => {
-  const { user_id, amount, transaction_type } = req.body;
-  const transaction = await createTransaction(
-    user_id,
+  const { type, amount, toaccount, fromaccount } = req.body;
+  const transaction = await createTransactionService(
+    type,
     amount,
-    transaction_type
+    toaccount,
+    fromaccount
   );
   res.json(transaction);
 };
