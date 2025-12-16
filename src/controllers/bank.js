@@ -26,13 +26,6 @@ export const deleteAccount = async (req, res) => {
   res.json({ user });
 };
 
-// Бүх дансыг авах
-export const getAllAccounts = async (req, res) => {
-  // Хэрвээ хэрэглэгчээр шүүх бол:
-  const { user_id } = req.body;
-  res.json({});
-};
-
 // данс авах
 export const getAccountByNumber = async (req, res) => {
   const { account_number } = req.body;

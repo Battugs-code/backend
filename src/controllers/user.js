@@ -43,8 +43,8 @@ export const getUserById = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-  const { id } = req.query;
-  const user = await deleteUserService(id);
+  const { username } = req.body;
+  const user = await deleteUserService(username);
   res.json(user);
 };
 
