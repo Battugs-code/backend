@@ -1,19 +1,34 @@
 import { db } from "../db.js";
-
+import bcrypt from "bcrypt";
 export const createUserService = async (
   username: string,
   email: string,
   password: string
 ) => {
+  const hashedPassword = await bcrypt.hash(password, 10);
   const response = await db.query(
     `INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *`,
-    [username, email, password]
+    [username, email, hashedPassword]
   );
   return response.rows[0];
 };
 
-export const getUsersService = async () => {
-  const response = await db.query("SELECT * FROM users");
+export const getUserByEmailService = async (email: string) => {
+  const response = await db.query("SELECT * FROM users WHERE email = $1", [
+    email,
+  ]);
+  return response.rows[0];
+};
+
+export const getUsersService = async (
+  email: string,
+  username: string,
+  password: string
+) => {
+  const response = await db.query(
+    "SELECT * FROM users WHERE email = $1 AND username = $2 AND password = $3",
+    [email, username, password]
+  );
   return response.rows;
 };
 
@@ -25,12 +40,13 @@ export const updateUserService = async (
   firstname: string,
   lastname: string
 ) => {
+  const hashedPassword = await bcrypt.hash(password, 10);
   const response = await db.query(
     `UPDATE users 
      SET username = $1, email = $2, password = $3, firstname = $4, lastname = $5 
      WHERE id = $6 
      RETURNING *`,
-    [username, email, password, firstname, lastname, id]
+    [username, email, hashedPassword, firstname, lastname, id]
   );
   return response.rows[0];
 };
@@ -40,7 +56,7 @@ export const getUserByIdService = async (id: string) => {
   return response.rows[0];
 };
 
-export const deleteUserService = async (username:string) => {
+export const deleteUserService = async (username: string) => {
   const response = await db.query(
     `DELETE FROM users WHERE username = $1 RETURNING *`,
     [username]

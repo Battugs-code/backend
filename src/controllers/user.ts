@@ -7,8 +7,9 @@ import {
   getUserAccountsService,
   getUserTransactionsService,
 } from "../services/user.js";
-
-export const createUser = async (req, res) => {
+import type { Request, Response } from "express";
+import { verifyJWT } from "../jwtMiddleware.js";
+export const createUser = async (req:Request,res:Response) => {
   const { username, email, password } = req.body;
 
   const user = await createUserService(username, email, password);
@@ -16,7 +17,7 @@ export const createUser = async (req, res) => {
   res.json(user);
 };
 
-export const updateUser = async (req, res) => {
+export const updateUser = async (req:Request,res:Response) => {
   const { id, username, email, password, firstname, lastname } = req.body;
 
   const user = await updateUserService(
@@ -31,25 +32,15 @@ export const updateUser = async (req, res) => {
   res.json(user);
 };
 
-export const getUsers = async (req, res) => {
-  const users = await getUsersService();
+export const getUsers = async (req:Request,res:Response) => {
+  const {username ,email,password} =req.body;
+   const users = await getUsersService(username,email,password);
   res.json(users);
 };
 
-export const getUserById = async (req, res) => {
-  const { id } = req.query;
-  const user = await getUserByIdService(id);
-  res.json(user);
-};
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req:Request,res:Response) => {
   const { username } = req.body;
   const user = await deleteUserService(username);
   res.json(user);
-};
-
-export const getUserAccounts = async (req, res) => {
-  const { id } = req.query;
-  const accounts = await getUserAccountsService(id);
-  res.json(accounts);
 };
