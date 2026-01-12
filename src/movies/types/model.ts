@@ -39,39 +39,39 @@ const TomatoesSchema: Schema<ITomatoes> = new Schema(
     viewer: {
       rating: { type: Number },
       numReviews: { type: Number },
-      meter: { type: Number }
+      meter: { type: Number },
     },
     critic: {
       rating: { type: Number },
       numReviews: { type: Number },
-      meter: { type: Number }
+      meter: { type: Number },
     },
     rotten: Number,
-    lastUpdated: Date
+    lastUpdated: Date,
   },
   { _id: false }
 );
 
 const MovieSchema: Schema<IMoviesDocument> = new Schema({
-  plot: { type: String, required: true },
-  genre: { type: [String], required: true },
-  title: { type: String, required: true },
-  year: { type: Number, required: true },
-  runtime: { type: Number, required: true },
-  cast: { type: [String], required: true },
-  poster: { type: String, required: true },
-  fullpolt: { type: String, required: true },
-  relased: { type: Date, required: true, default: new Date() },
-  languages: { type: [String], required: true },
-  directors: { type: [String], required: true },
+  plot: { type: String },
+  genre: { type: [String] },
+  title: { type: String },
+  year: { type: Number },
+  runtime: { type: Number },
+  cast: { type: [String] },
+  poster: { type: String },
+  fullpolt: { type: String },
+  relased: { type: Date, default: new Date() },
+  languages: { type: [String] },
+  directors: { type: [String] },
   awards: [
     {
       wins: { type: Number },
       nominations: { type: Number },
-      text: { type: String }
-    }
+      text: { type: String },
+    },
   ],
-  tomatoes: TomatoesSchema
+  tomatoes: TomatoesSchema,
 });
 
 export const Movies = model<IMoviesDocument>("movies", MovieSchema);
